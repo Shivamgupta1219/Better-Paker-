@@ -91,6 +91,18 @@ export default function Footer() {
                   info@betterparker.com
                 </span>
               </div>
+
+              <div className="flex items-center space-x-3">
+                <div>
+                  <Link
+                    to="/admin/login"
+                    className="text-white font-semibold hover:underline"
+                    target="_blank"
+                  >
+                    Go to Admin Login
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </div>

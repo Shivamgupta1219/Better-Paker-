@@ -48,10 +48,32 @@ export default function Contact() {
     message: "",
   });
 
-  const handleSubmit = (e) => {
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   alert("Message Sent! Thank you for contacting us.");
+  //   setFormData({ name: "", email: "", phone: "", message: "" });
+  // };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Message Sent! Thank you for contacting us.");
-    setFormData({ name: "", email: "", phone: "", message: "" });
+    try {
+      const response = await fetch("http://localhost:5000/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        alert(data.message);
+        setFormData({ name: "", email: "", phone: "", message: "" });
+      } else {
+        alert("Failed to send message. Please try again.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong. Please try later.");
+    }
   };
 
   const handleChange = (e) => {
@@ -99,10 +121,6 @@ export default function Contact() {
               <CardTitle>Call Us</CardTitle>
               <p className="text-gray-600 leading-relaxed mt-2">
                 Primary: +971 54 557 628
-                {/* <br />
-                Office: +971 4 123 4567
-                <br />
-                WhatsApp: +971 54 557 628 */}
               </p>
             </Card>
 
@@ -163,7 +181,7 @@ export default function Contact() {
                         name="phone"
                         value={formData.phone}
                         onChange={handleChange}
-                        placeholder="+971  54 557 628"
+                        placeholder="+971 54 557 628"
                         required
                       />
                     </div>
@@ -215,12 +233,17 @@ export default function Contact() {
             <div className="space-y-8">
               <Card>
                 <CardContent className="p-0">
-                  <div className="w-full h-80 bg-gray-300 rounded-lg flex items-center justify-center">
-                    <div className="text-center">
-                      <FaMapMarkerAlt className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-                      <p className="text-gray-600">Interactive Map</p>
-                      <p className="text-sm text-gray-500">DIFC, Dubai, UAE</p>
-                    </div>
+                  <div className="w-full h-80 rounded-lg overflow-hidden">
+                    <iframe
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1567.734797652349!2d55.2729242718891!3d25.1779027425906!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f6835cfd64c0f%3A0x25dca77a7dbd4b71!2sSobha%20Sapphire!5e0!3m2!1sen!2sin!4v1758958952305!5m2!1sen!2sin"
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title="Google Map"
+                    ></iframe>
                   </div>
                 </CardContent>
               </Card>
@@ -252,7 +275,7 @@ export default function Contact() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-blue-600 text-black">
+              <Card className="bg-blue-600 text-white">
                 <CardContent className="p-8 text-center">
                   <h3 className="text-xl font-semibold mb-4">
                     Need Immediate Assistance?
@@ -261,14 +284,16 @@ export default function Contact() {
                     Call us now for urgent property inquiries or to schedule a
                     same-day viewing.
                   </p>
-                  <Button
-                    variant="secondary"
-                    size="lg"
-                    className="w-full flex items-center justify-center gap-2"
-                  >
-                    <FaPhone className="w-4 h-4" />
-                    <a href="tel:+9715455768"> Call Now: +971 54 557 628</a>
-                  </Button>
+                  <a href="tel:+97154557628">
+                    <Button
+                      variant="secondary"
+                      size="lg"
+                      className="w-full flex items-center justify-center gap-2"
+                    >
+                      <FaPhone className="w-4 h-4" />
+                      Call Now: +971 54 557 628
+                    </Button>
+                  </a>
                 </CardContent>
               </Card>
             </div>
